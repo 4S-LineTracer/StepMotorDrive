@@ -1,7 +1,7 @@
 /*
  *
 */
-#include "func.h"
+#include "common.h"
 #include "motorDrive.h"
 
 int main(int argc, char const *argv[]) {

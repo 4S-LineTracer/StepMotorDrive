@@ -1,24 +1,15 @@
 /*
- *  
+ * 
 */
 #ifndef _MOTORDRIVE_H_
 #define _MOTORDRIVE_H_
 
-#include "func.h"
+#include "common.h"
 
-/* ------- */
-
-#ifdef DEBUG
-    #include <stdio.h>
-#endif
-
-/* ------- */
-
-extern int MOTOR_STATE;
-
-/* ------- */
+/* ---- functions ---- */
 
 void motorDrive();
 void stepOutput();
+void calcPulseFreqTableIndex(unsigned int* index, unsigned char* motorState, unsigned int* motorSpeed);
 
 #endif
