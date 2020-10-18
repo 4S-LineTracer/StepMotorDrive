@@ -3,10 +3,65 @@
 */
 #include "motorDrive.h"
 
-void motorDrive(){
-    stepOutput();
+// タイミングを調整してモータを励磁
+void motorDrive(unsigned char* motorState, unsigned char* motorSpeed){
+    static unsigned int pulseIndex = 0; // テーブルのインデックス
+    static unsigned char recentSpeed = 0;
+
+    // GRA1を更新
+    GRA1 = accTable[pulseIndex];
+    #ifdef DEBUG
+        printf("index: %d\n", pulseIndex);
+    #endif
+
+    // 励磁
+    if(*motorState != MOTOR_STOP){
+        stepOutput();
+    }
+
+    // パルス周波数テーブルの参照先を移動する
+    calcPulseFreqTableIndex(&pulseIndex, motorState, motorSpeed);
 }
 
+// パルス周波数テーブルを読み込む位置を移動
+void calcPulseFreqTableIndex(unsigned int* index, unsigned char* motorState, unsigned char* motorSpeed){
+    // TODO: Switchは最善手ではないかも
+    switch (*motorState) {
+        case MOTOR_STOP:
+            // do nothing in MOTOR_STOP
+            break;
+        
+        case MOTOR_ACCEL:
+            // インデックスを加算
+            (*index)++;
+
+            // インデックス位置>=最大速度なら状態遷移
+            if(*index >= 399){
+                *motorState = MOTOR_CONST;
+                *index = 399;
+            }
+            break;
+
+        case MOTOR_CONST:
+            // do nothing in MOTOR_CONST
+            break;
+
+        case MOTOR_BREAK:
+            // インデックスを減算
+            (*index)--;
+
+            // indexが0になったら状態遷移
+            if(*index == 0){
+                *motorState = MOTOR_STOP;
+            }
+            break;
+        
+        default:
+            break;
+    }
+}
+
+// ステッピングモータに励磁信号を出力
 void stepOutput(){
     static int index = 0;
 
@@ -18,7 +73,5 @@ void stepOutput(){
 
     // インデックスを移動する
     index++;
-    if(index > 3){
-        index = 0;
-    }
+    index &= 3;
 }
