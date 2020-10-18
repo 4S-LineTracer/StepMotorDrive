@@ -3,11 +3,12 @@
 */
 #include "motorDrive.h"
 
-// itask_motorからの実行を想定
+// タイミングを調整してモータを励磁
 void motorDrive(unsigned char* motorState, unsigned char* motorSpeed){
-    static unsigned int pulseIndex = 0;
+    static unsigned int pulseIndex = 0; // テーブルのインデックス
+    static unsigned char recentSpeed = 0;
 
-    // GRA1に設定
+    // GRA1を更新
     GRA1 = accTable[pulseIndex];
     #ifdef DEBUG
         printf("index: %d\n", pulseIndex);
@@ -38,9 +39,7 @@ void calcPulseFreqTableIndex(unsigned int* index, unsigned char* motorState, uns
             if(*index >= 399){
                 *motorState = MOTOR_CONST;
                 *index = 399;
-                break;
             }
-
             break;
 
         case MOTOR_CONST:
@@ -54,7 +53,6 @@ void calcPulseFreqTableIndex(unsigned int* index, unsigned char* motorState, uns
             // indexが0になったら状態遷移
             if(*index == 0){
                 *motorState = MOTOR_STOP;
-                break;
             }
             break;
         

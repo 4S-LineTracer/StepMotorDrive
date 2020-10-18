@@ -4,7 +4,14 @@
 #ifndef _MOTORDRIVE_H_
 #define _MOTORDRIVE_H_
 
-#include "common.h"
+#define DEBUG // エミュレーションを有効化
+#ifdef DEBUG
+    #include <stdio.h>
+    #include "sharedvars.h"
+    #include "registors.h"
+#endif
+
+#include "accTable.h"
 
 /* ---- functions ---- */
 
