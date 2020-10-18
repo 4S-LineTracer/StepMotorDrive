@@ -10,6 +10,6 @@
 
 void motorDrive();
 void stepOutput();
-void calcPulseFreqTableIndex(unsigned int* index, unsigned char* motorState, unsigned int* motorSpeed);
+void calcPulseFreqTableIndex(unsigned int* index, unsigned char* motorState, unsigned char* motorSpeed);
 
 #endif

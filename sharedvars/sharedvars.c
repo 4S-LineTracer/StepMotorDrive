@@ -5,7 +5,7 @@
 
 // Motor
 unsigned char MOTOR_STATE = MOTOR_STOP;
-unsigned int MOTOR_SPEED = 0;
+unsigned char MOTOR_SPEED = 0;
 
 // State machine
 unsigned char AGV_STATE = AGV_BOOT;

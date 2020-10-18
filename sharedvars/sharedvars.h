@@ -10,7 +10,7 @@
     #define MOTOR_CONST 2
     #define MOTOR_BREAK 3
     extern unsigned char MOTOR_STATE;
-    extern unsigned int MOTOR_SPEED;
+    extern unsigned char MOTOR_SPEED;
 
     // State machine
     #define AGV_BOOT 0
