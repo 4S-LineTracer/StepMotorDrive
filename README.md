@@ -24,7 +24,7 @@ ITU1割り込みによる実行を想定しています。
 
  - motorDrive/
  - accTable/
-
+ - itask_motor.*
 
 
 

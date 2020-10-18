@@ -2,10 +2,13 @@
 PATH = -I motorDrive/ -I Emulator/registors/ -I Emulator/sharedvars/  -I accTable/ -I ./
 
 # 単体テスト
-a.out: main.c motorDrive.o registors.o accTable.o sharedvars.o
-	gcc ${PATH} registors.o sharedvars.o accTable.o motorDrive.o main.c
+a.out: main.c itask_motor.o motorDrive.o registors.o accTable.o sharedvars.o
+	gcc ${PATH} registors.o sharedvars.o accTable.o motorDrive.o itask_motor.o main.c
 
 # 本体(itask_motor)
+itask_motor.o: itask_motor.h itask_motor.c
+	gcc -c ${PATH} itask_motor.c
+
 motorDrive.o: motorDrive/motorDrive.h motorDrive/motorDrive.c
 	gcc -c ${PATH} motorDrive/motorDrive.c
 

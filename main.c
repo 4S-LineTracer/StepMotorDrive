@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 #include "motorDrive.h"
+#include "itask_motor.h"
 
 int main(int argc, char const *argv[]) {
     printf("Hello, World\n");
@@ -14,7 +15,9 @@ int main(int argc, char const *argv[]) {
     TSTR |= 3;
 
     for (int i = 0; i < 2000; i++) {
-        motorDrive(&MOTOR_STATE, &MOTOR_SPEED);
+        // タスク実行
+        itask_motor();
+
         printf("MOTOR_STATE: %d GRA1: %lu\n", MOTOR_STATE, ((TSTR & 2) >= 1) * GRA1);
 
         if(MOTOR_STATE == MOTOR_CONST){
