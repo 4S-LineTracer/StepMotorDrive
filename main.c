@@ -9,15 +9,23 @@
 int main(int argc, char const *argv[]) {
     printf("Hello, World\n");
 
+    // init
     MOTOR_STATE = MOTOR_ACCEL;
-    MOTOR_SPEED = 255; // パーセンテージ指定 400データ*0.MOTOR_SPEED
+    MOTOR_SPEED = 255;
+    TSTR |= 3;
+
     for (int i = 0; i < 2000; i++) {
-        motorDrive();
+        motorDrive(&MOTOR_STATE, &MOTOR_SPEED);
         printf("MOTOR_STATE: %d GRA1: %lu\n", MOTOR_STATE, ((TSTR & 2) >= 1) * GRA1);
 
         if(MOTOR_STATE == MOTOR_CONST){
             MOTOR_STATE = MOTOR_BREAK;
         }
+
+        if(MOTOR_STATE == MOTOR_STOP){
+            MOTOR_STATE = MOTOR_ACCEL;
+        }
+        printf("--------\n");
     }
     
     return 0;

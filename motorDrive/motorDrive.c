@@ -3,11 +3,9 @@
 */
 #include "motorDrive.h"
 
-void motorDrive(){
+// itask_motorからの実行を想定
+void motorDrive(unsigned char* motorState, unsigned char* motorSpeed){
     static unsigned int pulseIndex = 0;
-
-    // パルス周波数テーブル参照先を計算
-    calcPulseFreqTableIndex(&pulseIndex, &MOTOR_STATE, &MOTOR_SPEED);
 
     // GRA1に設定
     GRA1 = accTable[pulseIndex];
@@ -16,24 +14,23 @@ void motorDrive(){
     #endif
 
     // 励磁
-    stepOutput();
+    if(*motorState != MOTOR_STOP){
+        stepOutput();
+    }
+
+    // パルス周波数テーブルの参照先を移動する
+    calcPulseFreqTableIndex(&pulseIndex, motorState, motorSpeed);
 }
 
 // パルス周波数テーブルを読み込む位置を移動
-// TODO: ここMOTOR_SPEEDとMOTOR_STATE関数内で書き換えること…ありますね
-// パルスが一定以上になったらMOTOR_CONSTとかMOTOR_STOPにしなきゃならんもんな
 void calcPulseFreqTableIndex(unsigned int* index, unsigned char* motorState, unsigned char* motorSpeed){
+    // TODO: Switchは最善手ではないかも
     switch (*motorState) {
         case MOTOR_STOP:
-            // ITU0,1を止めて、カウンタをリセット
-            TSTR &= 0b11111100;
-            GRA0 = 0;
-            GRA1 = 0;
+            // do nothing in MOTOR_STOP
             break;
         
         case MOTOR_ACCEL:
-            TSTR |= 0b00000011;
-
             // インデックスを加算
             (*index)++;
 
